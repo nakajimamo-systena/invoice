@@ -8,9 +8,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/**
+ * The Class ApiExceptionHandler.
+ */
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+  /**
+   * Handle all exception.
+   *
+   * @param ex the ex
+   * @param request the request
+   * @return the response entity
+   */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
     ex.printStackTrace();

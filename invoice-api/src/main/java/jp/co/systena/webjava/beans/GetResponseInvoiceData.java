@@ -8,65 +8,91 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The Class GetResponseInvoiceData.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetResponseInvoiceData implements Serializable {
 
+  /** The invoice no. */
   @JsonProperty("invoice_no")
   private String invoiceNo;
 
+  /** The client name. */
   @JsonProperty("client_name")
   private String clientName;
 
+  /** The client address. */
   @JsonProperty("client_address")
   private String clientAddress;
 
+  /** The client tel. */
   @JsonProperty("client_tel")
   private String clientTel;
 
+  /** The client fax. */
   @JsonProperty("client_fax")
   private String clientFax;
 
+  /** The client charge name. */
   @JsonProperty("client_charge_name")
   private String clientChargeName;
 
+  /** The invoice status. */
   @JsonProperty("invoice_status")
   private String invoiceStatus;
 
+  /** The invoice create date. */
   @JsonProperty("invoice_create_date")
   private String invoiceCreateDate;
 
+  /** The invoice title. */
   @JsonProperty("invoice_title")
   private String invoiceTitle;
 
+  /** The invoice amt. */
   @JsonProperty("invoice_amt")
   private String invoiceAmt;
 
+  /** The tax amt. */
   @JsonProperty("tax_amt")
   private String taxAmt;
 
+  /** The invoice start date. */
   @JsonProperty("invoice_start_date")
   private String invoiceStartDate;
 
+  /** The invoice end date. */
   @JsonProperty("invoice_end_date")
   private String invoiceEndDate;
 
+  /** The invoice note. */
   @JsonProperty("invoice_note")
   private String invoiceNote;
 
+  /** The create user. */
   @JsonProperty("create_user")
   private String createUser;
 
+  /** The create datetime. */
   @JsonProperty("create_datetime")
   private String createDatetime;
 
+  /** The update user. */
   @JsonProperty("update_user")
   private String updateUser;
 
+  /** The update datetime. */
   @JsonProperty("update_datetime")
   private String updateDatetime;
 
+  /**
+   * Instantiates a new gets the response invoice data.
+   *
+   * @param invoice the invoice
+   */
   public GetResponseInvoiceData(Invoice invoice) {
     // 顧客管理情報
     Client client = invoice.getClient();

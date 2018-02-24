@@ -8,24 +8,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The Class ErrorResponse.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorResponse implements Serializable {
 
-  // システムエラー
+  /** The Constant SYSTEM_ERROR. */
   @JsonIgnore
   public static final String SYSTEM_ERROR = "System Error";
 
-  // 入力エラー
+  /** The Constant VALIDATION_FAILED. */
   @JsonIgnore
   public static final String VALIDATION_FAILED = "Validation Failed";
 
-  // エラーメッセージ
+  /** The message. */
   @JsonProperty("message")
   private String message;
 
-  // 詳細エラー情報
+  /** The errors. */
   @JsonProperty("errors")
   private List<ErrorResponseDetail> errors;
 }

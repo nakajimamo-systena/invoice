@@ -11,6 +11,8 @@ import jp.co.systena.webjava.beans.ErrorResponse;
 import jp.co.systena.webjava.beans.ErrorResponseDetail;
 import jp.co.systena.webjava.beans.GetResponseInvoiceData;
 import jp.co.systena.webjava.beans.PostRequestInvoiceData;
+import jp.co.systena.webjava.common.Constants;
+import jp.co.systena.webjava.common.InvoiceApiProperties;
 import jp.co.systena.webjava.dao.entity.Client;
 import jp.co.systena.webjava.dao.entity.Invoice;
 import jp.co.systena.webjava.dao.entity.OrderHistory;
@@ -28,18 +30,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * The Class InvoiceRestController.
+ */
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceRestController {
+
+  /** The invoice service. */
   @Autowired
   InvoiceService invoiceService;
 
+  /** The order history servie. */
   @Autowired
   OrderHistoryService orderHistoryServie;
 
+  /** The client servie. */
   @Autowired
   ClientService clientServie;
 
+  /** The invoice prop. */
+  @Autowired
+  InvoiceApiProperties invoiceProp;
+
+  /**
+   * Gets the invoices.
+   *
+   * @return the invoices
+   */
   @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<Object> getInvoices() {
 
@@ -53,6 +71,12 @@ public class InvoiceRestController {
     return new ResponseEntity<Object>(responseData, null, HttpStatus.OK);
   }
 
+  /**
+   * Gets the invoice.
+   *
+   * @param invoiceNo the invoice no
+   * @return the invoice
+   */
   @RequestMapping(method = RequestMethod.GET, value = "{invoiceNo}")
   public ResponseEntity<Object> getInvoice(@PathVariable Integer invoiceNo) {
 
@@ -63,6 +87,14 @@ public class InvoiceRestController {
     return new ResponseEntity<Object>(responseData, null, HttpStatus.OK);
   }
 
+  /**
+   * Post invoice.
+   *
+   * @param requestData the request data
+   * @param result the result
+   * @return the response entity
+   * @throws ParseException the parse exception
+   */
   @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<Object> postInvoice(
           @RequestBody @Valid PostRequestInvoiceData requestData,
@@ -106,7 +138,7 @@ public class InvoiceRestController {
       invoiceAmt += orderHistory.getItemPrice() * orderHistory.getItemCount();
     }
     // 消費税
-    int taxAmt = (int)(invoiceAmt * 0.08);
+    int taxAmt = (int)(invoiceAmt * invoiceProp.getTaxRate());
 
     // 現在日時
     long now = System.currentTimeMillis();
@@ -121,7 +153,7 @@ public class InvoiceRestController {
     // 顧客管理情報
     invoice.setClient(client);
     // 請求状態
-    invoice.setInvoiceStatus("10");
+    invoice.setInvoiceStatus(Constants.INVOICE_STATUS_NEW);
     // 請求書作成日
     invoice.setInvoiceCreateDate(new Date(now));
     // 請求書件名
@@ -145,7 +177,7 @@ public class InvoiceRestController {
     // 更新日時
     invoice.setUpdateDatetime(new Timestamp(now));
     // 削除フラグ
-    invoice.setDelFlg("0");
+    invoice.setDelFlg(Constants.DEL_FLG_OFF);
 
     // 請求書を登録
     invoiceService.save(invoice);
